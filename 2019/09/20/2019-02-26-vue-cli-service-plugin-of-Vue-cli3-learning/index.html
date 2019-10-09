@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="vue-cli 3学习之vue-cli-service插件开发（注册自定义命令）"><meta name="keywords" content="vue-cli3,vue-cli-service,plugin"><meta name="author" content="DDong,undefined"><meta name="copyright" content="DDong"><title>vue-cli 3学习之vue-cli-service插件开发（注册自定义命令）【冬之乐园】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="icon" href="/favicon.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  }
+}</script></head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#概括："><span class="toc-number">2.</span> <span class="toc-text">概括：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接下来谈一谈-Vue-config-js"><span class="toc-number">3.</span> <span class="toc-text">接下来谈一谈 Vue.config.js</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插件"><span class="toc-number">4.</span> <span class="toc-text">插件</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Vue-cli-service"><span class="toc-number">4.0.0.1.</span> <span class="toc-text">Vue-cli-service</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#需求场景"><span class="toc-number">5.</span> <span class="toc-text">需求场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注册命令的第一种方式-—-使用-vue-cli-service-插件"><span class="toc-number">6.</span> <span class="toc-text">注册命令的第一种方式 —- 使用 vue-cli-service 插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注册命令的第二方式-—-Commander"><span class="toc-number">7.</span> <span class="toc-text">注册命令的第二方式 —- Commander</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#再谈谈项目中-build-和-watch-的不同点"><span class="toc-number">8.</span> <span class="toc-text">再谈谈项目中 build 和 watch 的不同点</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Public-文件夹"><span class="toc-number">8.0.0.1.</span> <span class="toc-text">Public 文件夹</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#推荐使用-inspect"><span class="toc-number">9.</span> <span class="toc-text">推荐使用 inspect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结语"><span class="toc-number">10.</span> <span class="toc-text">结语</span></a></li></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/avatar.png"></div><div class="author-info-name">DDong</div><div class="author-info-description"></div><div class="links-buttons"><a class="links-button button-hover" href="https://github.com/fan-lv" target="_blank">GitHub<i class="icon-dot bg-color9"></i></a><a class="links-button button-hover" href="mailto:15757856604@163.com" target="_blank">E-Mail<i class="icon-dot bg-color7"></i></a><a class="links-button button-hover" href="tencent://message/?uin=1019593584&amp;Site=&amp;Menu=yes" target="_blank">QQ<i class="icon-dot bg-color1"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">日志</span><span class="pull-bottom">9</span></a><a class="author-info-articles-tags article-meta" href="/tags"><span class="pull-top">标签</span><span class="pull-bottom">12</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">4</span></a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/tags">标签</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">冬之乐园</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">vue-cli 3学习之vue-cli-service插件开发（注册自定义命令）</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2019-09-20 | 更新于 2019-09-20</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/BuildTool/">BuildTool</a></div><div class="button-hover tags"><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/vue-cli3/">vue-cli3</a><span>&nbsp;|&nbsp;</span><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/vue-cli-service/">vue-cli-service</a><span>&nbsp;|&nbsp;</span><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/plugin/">plugin</a></div></div></div><div class="main-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>提到 vue-cli，<a href="https://link.juejin.im/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue-cli%2Fblob%2Fmaster%2FREADME.md" target="_blank" rel="noopener">官方文档</a>对其的介绍如下：</p>
+<blockquote>
+<p>A simple CLI for scaffolding Vue.js projects. 一个简单的Vue.js工程命令行脚手架工具。</p>
+</blockquote>
+<p>说白了，<code>vue-cli</code> 其实就是一个基于<code>webpack</code>构建，可以让用户快速初始化一个项目的工具。</p>
+<p><strong>基本原理</strong>: <code>vue-cli</code>并非从无到有地凭空生成一个项目，而是通过下载/拉取(通过<code>download-git-repo</code>工具)已有的工程到本地，完成生成项目的工作。</p>
+<blockquote>
+<ul>
+<li>注意安装<code>vue-cli 3</code>前，如若已安装旧版本<code>vue-cli</code>，需先卸载旧版本<code>vue-cli</code>，再重新安装vue-cli 3</li>
+<li><code>node</code>版本要求:  <a href="https://link.juejin.im/?target=http%3A%2F%2Fnodejs.cn%2Fdownload%2F" target="_blank" rel="noopener">安装</a> Node.js8.9 或更高版本</li>
+</ul>
+</blockquote>
+<p>这次我分享的主要主要内容是 <strong><code>vue-cli 3</code></strong>,当然不是全面的介绍，只是将我这次运营系统工作流改造中遇到比较深刻的点进行一番简单介绍</p>
+<p>而对于根据我个人对<code>vue-cli 3</code>的认识，我将需掌握的内容概括为四个部分:<strong><code>Vue.config.js</code></strong>、<strong><code>Vue-cli-service</code></strong>、<strong><code>插件</code></strong>、<strong><code>UI</code></strong>。</p>
+<h2 id="概括："><a href="#概括：" class="headerlink" title="概括："></a>概括：</h2><p>下面这张图是我对vue-cli 3 知识点进行了一个简单的概括</p>
+<p>比较常接触到<code>vue</code>一些基本的命令，比如说：</p>
+<ul>
+<li>vue create: 快速初始化一个项目</li>
+<li>vue serve：为某个原型（如：单独一个<code>vue</code>文件）快速启动一个服务（要求全局安装<code>@vue/cli-service-global</code>）</li>
+<li>vue ui: 通过图形化界面创建或管理界面</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2019/2/25/169248590b2fbadc?w=1255&h=585&f=png&s=181919" alt></p>
+<h2 id="接下来谈一谈-Vue-config-js"><a href="#接下来谈一谈-Vue-config-js" class="headerlink" title="接下来谈一谈 Vue.config.js"></a>接下来谈一谈 <code>Vue.config.js</code></h2><p>我觉得对于一个普通的项目的工作流构建来说，<a href="https://note.youdao.com/ynoteshare1/index.html?id=44b35da84f7d6b95153d6f7fcebbd264&type=note#/" target="_blank" rel="noopener">配置</a><code>vue.config.js</code>足够了</p>
+<p>而里面比较特别和常用的主要是以下这些：除了 <strong><code>publicPath</code></strong>、 <strong><code>outputDir</code></strong>、 <strong><code>filenameHashing</code></strong>、 <strong><code>pages</code></strong> 等这些常用字段外，我觉得还需要提一下的是 <strong><code>configureWebpack</code></strong> 字段和 <strong><code>chainWebpack</code></strong> 字段</p>
+<p>我对这两个字段的理解是</p>
+<ul>
+<li>configureWebpack 是让用户字段写一个配置对象，其内部再通过<a href="https://github.com/survivejs/webpack-merge" target="_blank" rel="noopener"><code>webpack-merge</code></a>将原有对象和用户配置的对象进行合并</li>
+<li>chainWebpack 是通过利用<a href="https://github.com/neutrinojs/webpack-chain" target="_blank" rel="noopener"><code>webpack-chain</code></a>提供的链式调用方法去直接修改原有的配置对象<br><img src="https://user-gold-cdn.xitu.io/2019/2/25/16924858feec03b6?w=631&h=595&f=png&s=64132" alt="在这里插入图片描述"></li>
+</ul>
+<blockquote>
+<p>对于 <code>vue-cli 3</code>来说，它还存在一个比较特别的模块，就是它提供了自定义插件的功能</p>
+</blockquote>
+<h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><p>说到<code>vue-cli 3</code> 的插件，其实可以将其分为两种情况：</p>
+<ol>
+<li><p>一种是<code>vue-cli</code>插件,这种情况一般是对外的，主要是开发一些<code>npm</code>包，并将其发布到<code>npm</code>上；</p>
+</li>
+<li><p>另一种就是<code>service 插件</code>, 也就是我这次工作流改造中用到的主要内容，其主要包括內建命令和配置模块，而这两部分的内容都是在调用<code>vue-cli-service</code>命令时才会触发;因此，使用到<code>service</code>插件的用户，需要安装一下<code>vue-cli-service</code>。</p>
+</li>
+</ol>
+<ul>
+<li>Cli插件（<code>Generator</code>和<code>Prompts</code>）：为<code>@vue/cli</code>项目添加额外特性的 npm 包</li>
+<li><strong>service插件</strong>（內建命令和配置模块）：会在一个<code>Service</code>实例被创建时自动加载——比如每次<code>vue-cli-service</code>命令在项目中被调用时。</li>
+</ul>
+<h5 id="Vue-cli-service"><a href="#Vue-cli-service" class="headerlink" title="Vue-cli-service"></a>Vue-cli-service</h5><blockquote>
+<ol>
+<li>內建命令<blockquote>
+<p>该功能的实现主要是调用了<code>api.registerCommand</code>这个方法向vue-cli-service内部注入额外的命令，<code>vue-cli 3</code>提供的<code>vue-cli-service serve</code>和<code>vue-cli-service build</code>等命令的实现也是利用了这个方法。</p>
+</blockquote>
+</li>
+<li>配置模块<blockquote>
+<p>该功能的实现则是利用的<code>api.chainWebpack</code>和<code>api.configureWebpack</code>方法对<code>webpack</code>配置进行修改。</p>
+</blockquote>
+</li>
+<li>注：稍后我会在文章的下面给出一个自定义命令的 demo</li>
+</ol>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可以通过下面这个命令查看所有命令，从而确认自定义的命令是否创建成功</span></span><br><span class="line">npx vue-cli-service help</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-gold-cdn.xitu.io/2019/2/25/16924858fd37c5ee?w=528&h=334&f=png&s=33989" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>然后接下来看一看具体实操例子</p>
+</blockquote>
+<h2 id="需求场景"><a href="#需求场景" class="headerlink" title="需求场景"></a>需求场景</h2><ol>
+<li>支持<code>watch</code>和<code>build</code>命令，并满足以下功能</li>
+<li>同时支持<code>--key</code>命令读取<code>.json</code>文件中的<code>key</code>来进行构建，并支持多个<code>key</code></li>
+<li>同时支持<code>.json</code>配置文件，可以指定<code>entry</code>路径和<code>output</code>路径</li>
+</ol>
+<p>需求示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># watch 监听某个入口的文件变动并编译</span></span><br><span class="line">$ node ./scripts/Bundler.js watch --key=[your_key]</span><br><span class="line"></span><br><span class="line"><span class="comment"># build 打包编译某个入口的文件(生产模式)</span></span><br><span class="line">$ node ./scripts/Bundler.js build --key=[your_key]</span><br></pre></td></tr></table></figure>
+
+<p>这对第三点，假设项目根目录下有 <code>Views.json</code> 文件，形如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"basePath"</span>: <span class="string">"resources/assets/js/views"</span>,</span><br><span class="line">  <span class="attr">"destBasePath"</span>: <span class="string">"public/js/res"</span>,</span><br><span class="line">  <span class="attr">"entry"</span>: &#123;</span><br><span class="line">    "page": &#123; // 入口的唯一命名，打包和开发时要用到的 key 值</span><br><span class="line">      "name": "page", // 入口文件的文件名(例如 queryDetail.js)</span><br><span class="line">      "srcPath": "job/template/page", // JS 入口源文件所在的文件夹的根目录</span><br><span class="line">      "output": "page" // 输出文件的名称</span><br><span class="line">      "description": "页面功能描述", // 页面功能描述，不启任何作用</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>然而我为什么没有直接使用<code>vue-cli-service</code>提供的<code>serve</code>和<code>build</code>命令呢？</p>
+<blockquote>
+<p>原因如下：<br>对于<code>watch</code>和<code>build</code>命令，其实他们除了要求具备<code>vue-cli-service</code>提供的<code>serve</code>和<code>build</code>命令效果外，还得让用户通过<code>--key</code>传入打包入口，而<code>vue-cli-service</code>提供的这些命令是其内部写好了的，我们无法对其内部进行修改，所以为了实现这个需求，我们需要进行自定义命令。</p>
+</blockquote>
+</blockquote>
+<p>解决方式：</p>
+<p>要实现 <code>watch</code> 和 <code>build</code> 功能，其实在 <code>vue-cli 3</code> 中 <code>vue-cli-service</code> 有提供了相对应的 <code>api</code> 给用户进行调用，也就是注册自定义的命令，实际上就是向 <code>vue-cli-service</code> 注入额外的命令。</p>
+<h2 id="注册命令的第一种方式-—-使用-vue-cli-service-插件"><a href="#注册命令的第一种方式-—-使用-vue-cli-service-插件" class="headerlink" title="注册命令的第一种方式 —- 使用 vue-cli-service 插件"></a>注册命令的第一种方式 —- 使用 vue-cli-service 插件</h2><p>以注册<code>watch</code>命令为例，做一个小<code>demo</code>：</p>
+<blockquote>
+<p><a href="https://github.com/DengDongXia/plugin-demo" target="_blank" rel="noopener">demo github 地址</a></p>
+</blockquote>
+<ol>
+<li><p>新建一个项目</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 首先进行 vue-cli 安装</span></span><br><span class="line">npm i -g @vue/cli</span><br><span class="line"><span class="comment">// 查看是否安装成功，看到版本号就是安装成功了</span></span><br><span class="line">vue -V</span><br><span class="line"><span class="comment">// 新建一个项目</span></span><br><span class="line">vue create 项目名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>针对已有项目使用 <code>vue-cli-service</code></p>
+</li>
+</ol>
+<p>安装<code>vue-cli-service</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 进行 vue-cli-service 安装</span></span><br><span class="line">npm i -D @vue/cli-service</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>在<code>package.json</code>中的<code>vuePlugins</code>对象中的<code>service</code>字段引入相应的js文件（用于注册<code>watch 命令</code>的文件, 假设该文件名为：<code>vue-cli-plugin-watch.js</code>，并放在根目录）</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// package.json 中</span><br><span class="line">// 注册命令的 js 文件名为 vue-cli-plugin-watch.js</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">   <span class="attr">"watch"</span>: <span class="string">"vue-cli-service watch"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"vuePlugins"</span>: &#123;</span><br><span class="line">     <span class="attr">"service"</span>: [</span><br><span class="line">       <span class="string">"./vue-cli-plugin-watch"</span></span><br><span class="line">     ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>vue-cli-plugin-watch.js</code> 代码如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">api, projectOptions</span>) =&gt;</span> &#123;</span><br><span class="line">  api.registerCommand(<span class="string">'watch'</span>, &#123;</span><br><span class="line">  	description: <span class="string">'watch plugin for vue cli 3'</span>,</span><br><span class="line">  	usage: <span class="string">'vue-cli-service watch'</span>,</span><br><span class="line">  	options: &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, (args) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'watch 命令注册成功'</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在终端输入<code>npm run watch</code>，看到终端输出“<code>watch</code>命令注册成功”后，恭喜<code>watch</code>命令基本注册完成啦。</p>
+</li>
+</ol>
+<p>可以通过运行<code>npx vue-cli-service help</code>查看vue-cli-service下面的所有命令，可以看到新增加了一个<code>watch</code>命令<br><img src="https://user-gold-cdn.xitu.io/2019/2/25/16924858fd78e1ee?w=672&h=237&f=png&s=31921" alt="在这里插入图片描述"></p>
+<ol start="6">
+<li>补充：另外，对于一个插件的使用，我们可以选择性的让用户进行一些设置；通过让用户在<code>vue.config.js</code>中的<code>pluginOptions</code>向插件进行传参数</li>
+</ol>
+<p>在项目根目录创建<code>vue.config.js</code>文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vue.config.js相关代码</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  pluginOptions: &#123;</span><br><span class="line">    watch: &#123;</span><br><span class="line">      <span class="comment">// vue-cli-plugin-watch 插件可以作为 `projectOptions.pluginOptions.watch` 访问这些选项，其他插件也可以拿到</span></span><br><span class="line">      param: <span class="string">'传参数给內建插件'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>vue-cli-plugin-watch.js</code> 代码如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function">(<span class="params">api, projectOptions</span>) =&gt;</span> &#123;</span><br><span class="line">  api.registerCommand(<span class="string">'watch'</span>, &#123;</span><br><span class="line">  	description: <span class="string">'watch plugin for vue cli 3'</span>,</span><br><span class="line">  	usage: <span class="string">'vue-cli-service watch'</span>,</span><br><span class="line">  	options: &#123;&#125;</span><br><span class="line">  &#125;, (args) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 输出传入的参数</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'watch 命令注册成功'</span>)</span><br><span class="line">    <span class="comment">// projectOptions 拿到的是 vue.config.js 文件暴露出来的配置</span></span><br><span class="line">    <span class="built_in">console</span>.log(projectOptions.pluginOptions.watch.param)</span><br><span class="line">    <span class="comment">// 通过终端传进来的参数</span></span><br><span class="line">    <span class="keyword">const</span> key = args.key ? args.key : process.env.npm_config_key</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`--key = <span class="subst">$&#123;key&#125;</span>`</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>运行<code>npm run watch</code>命令，可见终端输出了‘传参数给內建插件’，即通过vue-config.js传参成功<br>运行<code>npm run watch</code>命令，可见终端输出了‘传参数给內建插件’，即传参成功</p>
+</blockquote>
+<p>其实再去看看<code>build</code>命令的实现源码，其实和上面watch的实现是差不多的</p>
+<p>Vue-cli-service build 命令源码<br><img src="https://user-gold-cdn.xitu.io/2019/2/25/16924858fed428d6?w=836&h=383&f=png&s=79054" alt="在这里插入图片描述"><br>注册命令后，就可以通过调用 api.resolveWebpackConfig() 取回解析好的 webpack 配置。每次调用都会新生成一个 webpack 配置用来在需要时进一步修改。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="params">api</span> =&gt;</span> &#123;</span><br><span class="line">  api.registerCommand(<span class="string">'my-build'</span>, args =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> configA = api.resolveWebpackConfig()</span><br><span class="line">    <span class="keyword">const</span> configB = api.resolveWebpackConfig()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 针对不同的目的修改 `configA` 和 `configB`...</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过调用 api.resolveChainableWebpackConfig() 获得一个新生成的链式配置</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">api.registerCommand(<span class="string">'my-build'</span>, args =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> configA = api.resolveChainableWebpackConfig()</span><br><span class="line">  <span class="keyword">const</span> configB = api.resolveChainableWebpackConfig()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 针对不同的目的链式修改 `configA` 和 `configB`...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> finalConfigA = configA.toConfig()</span><br><span class="line">  <span class="keyword">const</span> finalConfigB = configB.toConfig()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>再看回operation的项目需求，要求实现<code>watch</code>和<code>build</code>,<code>watch</code>实现还好说，但是考虑到直接使用<code>vue-cli-service</code>的内建命令模块实现<code>build</code>会将其原有的命令进行覆盖，这种操作不太理想，所以改用了另外一种实现方式:使用 <strong><code>commander</code></strong> 实现注册命令。</p>
+</blockquote>
+<h2 id="注册命令的第二方式-—-Commander"><a href="#注册命令的第二方式-—-Commander" class="headerlink" title="注册命令的第二方式 —- Commander"></a>注册命令的第二方式 —- <a href="http://tj.github.io/commander.js/" target="_blank" rel="noopener">Commander</a></h2><ul>
+<li>定制自己的命令<code>watch</code></li>
+</ul>
+<blockquote>
+<p><a href="https://github.com/DengDongXia/command-plugin-demo" target="_blank" rel="noopener"><code>demo github</code>源码地址</a></p>
+</blockquote>
+<p>主要实现代码如下：<br><img src="https://user-gold-cdn.xitu.io/2019/2/25/16924858fee1255e?w=478&h=189&f=png&s=17798" alt="在这里插入图片描述"><br><code>demo</code>具体步骤：</p>
+<ol>
+<li>初始化一个项目</li>
+<li>在根目录下创建一个<code>script</code>文件夹，在该文件夹目录下新建一个用于实现注册命令的js文件，我在这创建的文件名为<code>commandar-watch.js</code></li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 安装 Commander</span></span><br><span class="line">npm install Commander -D</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// commandar-watch 具体实现代码</span></span><br><span class="line"><span class="comment">// 注：可同时注册多个命令</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> program = <span class="built_in">require</span>(<span class="string">'commander'</span>)</span><br><span class="line"></span><br><span class="line">program.version(<span class="string">'0.1.0'</span>)</span><br><span class="line">  .option(<span class="string">'-k, --key [type]'</span>, <span class="string">'key to build'</span>)</span><br><span class="line"></span><br><span class="line">program</span><br><span class="line">  .command(<span class="string">'watch'</span>)</span><br><span class="line">  .description(<span class="string">'run the given remote command'</span>)</span><br><span class="line">  .action(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'watch 命令注册成功'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用户传进来的 key 值</span></span><br><span class="line"><span class="comment">     * yarn 运行命令时，可通过 program.key 获取到用户传进来的 key 值</span></span><br><span class="line"><span class="comment">     * npm 运行命令时，需通过 process.env.npm_config_key 获取到用户传进来的 key 值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">const</span> key = program.key ? program.key : process.env.npm_config_key</span><br><span class="line">    <span class="built_in">console</span>.log(key)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">program.parse(process.argv)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>在<code>package.json</code>文件中<code>scripts</code>的<code>watch</code>中，使用<code>node</code>执行<code>commandar-watch.js</code>的<code>watch</code>命令</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"watch"</span>: <span class="string">"node ./script/commandar-watch.js watch"</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在终端执行<code>npm run watch</code>命令，看到终端输出‘watch 命令注册成功’后，恭喜<code>watch</code>命令注册成功啦。当然，你也可以传入<code>--key</code>的值，如：<code>npm run watch --key=用户传的key值</code>，可见到终端输出‘用户传的key值’，证明已经获取到用户传的参数啦。</p>
+</li>
+</ol>
+<h2 id="再谈谈项目中-build-和-watch-的不同点"><a href="#再谈谈项目中-build-和-watch-的不同点" class="headerlink" title="再谈谈项目中 build 和 watch 的不同点"></a>再谈谈项目中 build 和 watch 的不同点</h2><p>其实这两个命令主要用到的配置还是Vue-cli 3提供的基本配置，在再次基础上针对不同页面特别设置一些配置，比如说针对某些页面需要进行css提取，还有不同页面设置不同的<code>entry</code>和<code>output</code>等等。而着这两个命令的主要区别就是Watch 字段、不同mode；对于是否压缩打包，我通过设置不同的环境模式从而设置文件是否需要打包（webpack 4提供了这个功能）；至于是否需要监听文件的改变功能的实现，我借鉴了<code>vue-cli-service build</code>命令的<code>--watch</code>实现方式。</p>
+<p>vue-cli-service build –watch ，核心代码 是获取webpack 配置，并将配置对象的watch字段的值设置为true。<img src="https://user-gold-cdn.xitu.io/2019/2/25/1692485940a6432f?w=399&h=126&f=png&s=10045" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>注: <code>vue-cli-service</code>中的<code>build</code>命令<code>--watch</code>的实现<a href="https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/commands/build/index.js" target="_blank" rel="noopener">源码地址</a></p>
+</blockquote>
+<h5 id="Public-文件夹"><a href="#Public-文件夹" class="headerlink" title="Public 文件夹"></a>Public 文件夹</h5><p>主要用来放置一些无需经过webpack处理的静态资源或模板等等。其目录下的内容会被直接拷贝到构建输出目录下<br>关于存在原因：index.html模板，动态引入图片，引入不兼容模块</p>
+<blockquote>
+<p>实现源码<br><img src="https://user-gold-cdn.xitu.io/2019/2/25/169248592af6f0b1?w=576&h=332&f=png&s=102642" alt="在这里插入图片描述"></p>
+</blockquote>
+<h2 id="推荐使用-inspect"><a href="#推荐使用-inspect" class="headerlink" title="推荐使用 inspect"></a>推荐使用 inspect</h2><p>审查 vue-cli 项目的 webpack 配置，可以很方便将查看使用 <code>vue-cli 3</code>配置后，其具体的 <code>webpack</code>配置<br><img src="https://user-gold-cdn.xitu.io/2019/2/25/1692485929e1d5c1?w=323&h=366&f=png&s=96749" alt="在这里插入图片描述"></p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>针对这次分享的内容，虽然说我侧重分享了插件部分的内容，但是并不意味着<code>vue-cli 3</code> 内容只有这些，只是我这次开发中遇到比较多的模块就是<code>service</code>插件这一块，所以就特别提了一下，它还有其他的内容比如说ui那一块等等；</p>
+<p>体会：<br>在开发过程中，当遇到，对api不熟悉，造成无法很好的运用好某些<code>api</code>的情况时，其实可以考虑去研究研究一下源码，会发现事情变得简单，其实在<code>vue-cli</code> 的官网里面也有提到配合源码去学习<code>api</code>，这才能真正灵活的使用对应的功能等等。<br>在这个项目里面，我就是在一边学习一边实现需求。还有，考虑问题要全方面的想，多测试一些页面。比如说<code>npm</code>与<code>yarn</code>在终端中的传参方式不一样，导致代码中获取的<code>key</code>值方式也不一样这个问题，就是得多测试才会发现。还有要多请教一些前辈，你会发现有时候经验对于开发方式和开发效率来说，真的很重要。</p>
+<p>参考文章：</p>
+<blockquote>
+<ul>
+<li><a href="https://juejin.im/post/5c5193b1f265da614a3ae13b" target="_blank" rel="noopener">深入认识 vue-cli：能做的不仅仅是初始化 vue 工程</a></li>
+</ul>
+</blockquote>
+<p>拓展文章：</p>
+<blockquote>
+<ul>
+<li><a href="http://note.youdao.com/noteshare?id=87e9249155ef6da0818b4f5afff91217&sub=4DB4470F37CE43EAA54EA75DBA3A883C" target="_blank" rel="noopener">vue-cli 3学习知识点总结</a></li>
+<li><a href="http://note.youdao.com/noteshare?id=44b35da84f7d6b95153d6f7fcebbd264&sub=F186F25C20024E70962F3543C5D36B60" target="_blank" rel="noopener">vue.config.js 基本配置</a></li>
+<li><a href="http://note.youdao.com/noteshare?id=248eb7265f22f5524e58d1245e57008d&sub=CCF6EC6EFCD8415FBDAA162698E3A853" target="_blank" rel="noopener">vue-cli 插件</a></li>
+</ul>
+</blockquote>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DDong</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2019/09/20/2019-02-26-vue-cli-service-plugin-of-Vue-cli3-learning/">http://yoursite.com/2019/09/20/2019-02-26-vue-cli-service-plugin-of-Vue-cli3-learning/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com">冬之乐园</a>！</span></div></div></article><div id="pagination"><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2019/09/18/hello-world/"><span>Hello World</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2017 ～ 2019 By DDong</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

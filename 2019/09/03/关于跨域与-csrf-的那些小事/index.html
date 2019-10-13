@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="关于跨域与 csrf 的那些小事"><meta name="keywords" content="跨域,csrf,安全"><meta name="author" content="DDong,undefined"><meta name="copyright" content="DDong"><title>关于跨域与 csrf 的那些小事【冬之乐园】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="icon" href="/favicon.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  }
+}</script></head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识探讨部分"><span class="toc-number">2.</span> <span class="toc-text">知识探讨部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于跨域"><span class="toc-number">2.1.</span> <span class="toc-text">关于跨域</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#产生"><span class="toc-number">2.1.1.</span> <span class="toc-text">产生</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#为什么会被过滤？"><span class="toc-number">2.1.2.</span> <span class="toc-text">为什么会被过滤？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#发生跨域时，允许进行的操作"><span class="toc-number">2.1.3.</span> <span class="toc-text">发生跨域时，允许进行的操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#跨域限制的资源"><span class="toc-number">2.1.4.</span> <span class="toc-text">跨域限制的资源</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方式"><span class="toc-number">2.1.5.</span> <span class="toc-text">解决方式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拓展知识点：web-安全之-csrf（跨站伪造请求）"><span class="toc-number">3.</span> <span class="toc-text">拓展知识点：web 安全之 csrf（跨站伪造请求）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#攻击成功的操作步骤如下："><span class="toc-number">3.0.0.1.</span> <span class="toc-text">攻击成功的操作步骤如下：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#csrf-特征："><span class="toc-number">3.0.0.2.</span> <span class="toc-text">csrf 特征：</span></a></li></ol></li></ol><li class="toc-item toc-level-3"><a class="toc-link" href="#csrf-防御途径"><span class="toc-number">3.1.</span> <span class="toc-text">csrf 防御途径</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Referer-HTTP请求完整来源路径（不完善）"><span class="toc-number">3.1.1.</span> <span class="toc-text">1. Referer: HTTP请求完整来源路径（不完善）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Origin-CORS-中的请求头，当跨域访问时，会携带此请求头（不完善）"><span class="toc-number">3.1.2.</span> <span class="toc-text">2. Origin: CORS 中的请求头，当跨域访问时，会携带此请求头（不完善）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-token-校验（常用方式）"><span class="toc-number">3.1.3.</span> <span class="toc-text">3. token 校验（常用方式）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#校验原理"><span class="toc-number">3.1.3.1.</span> <span class="toc-text">校验原理:</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参考文章"><span class="toc-number">3.1.4.</span> <span class="toc-text">参考文章</span></a></li></ol></li></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/avatar.png"></div><div class="author-info-name">DDong</div><div class="author-info-description"></div><div class="links-buttons"><a class="links-button button-hover" href="https://github.com/fan-lv" target="_blank">GitHub<i class="icon-dot bg-color5"></i></a><a class="links-button button-hover" href="mailto:15757856604@163.com" target="_blank">E-Mail<i class="icon-dot bg-color5"></i></a><a class="links-button button-hover" href="tencent://message/?uin=1019593584&amp;Site=&amp;Menu=yes" target="_blank">QQ<i class="icon-dot bg-color4"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">日志</span><span class="pull-bottom">15</span></a><a class="author-info-articles-tags article-meta" href="/tags"><span class="pull-top">标签</span><span class="pull-bottom">20</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">12</span></a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/tags">标签</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">冬之乐园</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">关于跨域与 csrf 的那些小事</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2019-09-03 | 更新于 2019-10-13</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/跨域/">跨域</a><i class="fa fa-angle-right" style="margin: 0 8px;"></i><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/跨域/安全/">安全</a></div><div class="button-hover tags"><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/跨域/">跨域</a><span>&nbsp;|&nbsp;</span><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/csrf/">csrf</a><span>&nbsp;|&nbsp;</span><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/安全/">安全</a></div></div></div><div class="main-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;在这段时间，部门前辈分享了不少干货。我学到了不少内容，并对其进行简单整理，以便更好地转化为自己的知识。</p>
+<h2 id="知识探讨部分"><a href="#知识探讨部分" class="headerlink" title="知识探讨部分"></a>知识探讨部分</h2><h3 id="关于跨域"><a href="#关于跨域" class="headerlink" title="关于跨域"></a>关于跨域</h3><h4 id="产生"><a href="#产生" class="headerlink" title="产生"></a>产生</h4><ol>
+<li>协议，域名，端口三者其中存在不同都会形成跨域；故，当协议，端口，域名三者均相同时，浏览器就会认为是同源，允许加载该资源，否则为不同源。</li>
+<li>跨域存在原因：浏览器的同源限制策略</li>
+</ol>
+<ul>
+<li>请求：客户端（<a href="http://www.a.com）" target="_blank" rel="noopener">www.a.com）</a> -》 服务端(<a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a>)</li>
+<li>响应：客户端（<a href="http://www.a.com）《-" target="_blank" rel="noopener">www.a.com）《-</a>  服务端(<a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a>)</li>
+</ul>
+<p>&emsp;&emsp;从上面列出的例子中，我们可以看到客户端和服务端是处于不同的域名下，这种情况，客户端可以正常地向服务端发出请求。但是，由于浏览器的同源限制策略，服务端响应的数据会被浏览器过滤掉，并抛出常见的跨域报错。</p>
+<blockquote>
+<p>网上随便找了一张常见的跨域报错的图</p>
+</blockquote>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/3/16cf7c9700fefed8?w=2248&h=358&f=png&s=93189" alt></p>
+<blockquote>
+<p>特别需要提一下的是：IE 与其他浏览器对于同源策略的处理方式稍有点不同。主要包括以下两点：</p>
+</blockquote>
+<ul>
+<li><strong>授信范围</strong>：两个相互之间高度互信的域名，不受同源策略的限制。</li>
+<li><strong>端口</strong>：IE 未将端口号加入到同源策略的组成成分中。即两个协议，域名相同，端口不同的域名，IE 会认为两者是属于同源并不受限制的。</li>
+</ul>
+<h4 id="为什么会被过滤？"><a href="#为什么会被过滤？" class="headerlink" title="为什么会被过滤？"></a>为什么会被过滤？</h4><p> &emsp;&emsp;浏览器收到响应数据之后，会判断响应回数据的源和当前页面的源是否是属于同源。针对不同源，如果后端没有对响应字段进行处理，则响应回的数据会被浏览器直接过滤掉。</p>
+<h4 id="发生跨域时，允许进行的操作"><a href="#发生跨域时，允许进行的操作" class="headerlink" title="发生跨域时，允许进行的操作"></a>发生跨域时，允许进行的操作</h4><ol>
+<li>通常允许跨域写操作（link、redirect、表单提交）</li>
+<li>通常允许跨域资源嵌入（script、img、video…）</li>
+<li>通常禁止跨域读操作(ajax)</li>
+<li>可以正常发送请求，可以携带Cookie(withCredentials)，但是浏览器会限制来自于不同域的资源的接收</li>
+</ol>
+<h4 id="跨域限制的资源"><a href="#跨域限制的资源" class="headerlink" title="跨域限制的资源"></a>跨域限制的资源</h4><ul>
+<li>1.数据存储限制：Cookie, LocalStorage, IndexDB 无法读取 </li>
+<li>2.脚本 API 限制：DOM 无法操作</li>
+<li>3.网络请求限制：XHR 请求无法接收响应</li>
+</ul>
+<p>第1点:</p>
+<p>   （1） LocalStorage、IndexedDB 以源进行分割，每个源都拥有自己单独的存储空间，一个源中的 JavaScript 脚本不能对其它源的数据进行读写操作。</p>
+<p>   （2）cookie 的同源限制只要体现在域方面，与端口，协议无关。用户可以获取和设置当前域以及当前域对应父域下的 cookie。</p>
+<p>第2点：</p>
+<p>（1）脚本API限制：浏览器限制了 js 的跨站点（不同源）调用或操作。如：来源于 A 源页面的脚本，只能操作“同源”的页面，而来源于 B 源页面的脚本不能操作 A 源页面的 DOM。</p>
+<p>（2）当然，需要特别提醒一下的是，对于一段 js 脚本来说，该脚本的“源”指的是加载该脚本页面的源，与存储该脚本的地址无关。如：A（<code>https://www.a.com</code>）页面下加载了两段脚本，分别为：b.js (源于<code>http://www.b.com</code>)和c.js(<code>https:www.c.com</code>)。b.js 和 c.js 被加载至A页面下，与 A 同源，所以 b 和 c 脚本都可以操作 A 页面的 DOM。</p>
+<p>&emsp;&emsp;进一步思考，我们会发现 A 页面地址与 b 和 c 脚本存储地址都处于不同源下，按道理，应该会出现跨域限制（同源限制），但结果是没有。其实这个是取决于浏览器的一个特性，浏览器的同源策略不对<code>src</code>属性做限制，也就是说像<code>&lt;script&gt;</code>,<code>&lt;img&gt;</code>,<code>&lt;link&gt;</code>等这些标签是可以从不同源的网站中获取到资源的。</p>
+<h4 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h4><p>&emsp;&emsp;跨域的解决方案有很多( jsonp，反向代理，使用 document.domain 设置为同域，跨域资源共享等等)，这里就不详细说了，但特别想提一下是跨域资源共享（cors）</p>
+<p> cors 主要是进行以下处理:</p>
+<p>&emsp;&emsp;服务端设置响应头的 access-control-allow-origin 的值为允许请求的域（客服端的）或设置为<code>*</code>（即匹配任意域名，任意客户端都可访问）；即可获取到该服务端响应的跨域资源。</p>
+<p> 原因：</p>
+<p>&emsp;&emsp;当响应数据从服务端回到浏览器时，浏览器得知客户端和服务端属于不同的域，但同时浏览器又看到响应数据的响应头中 access-control-allow-origin 的字段值是包含当前客户端地址或<code>*</code>，浏览器则不会对响应的数据进行过滤。</p>
+<h2 id="拓展知识点：web-安全之-csrf（跨站伪造请求）"><a href="#拓展知识点：web-安全之-csrf（跨站伪造请求）" class="headerlink" title="拓展知识点：web 安全之 csrf（跨站伪造请求）"></a>拓展知识点：web 安全之 csrf（跨站伪造请求）</h2><h5 id="攻击成功的操作步骤如下："><a href="#攻击成功的操作步骤如下：" class="headerlink" title="攻击成功的操作步骤如下："></a>攻击成功的操作步骤如下：</h5><p> <img src="https://user-gold-cdn.xitu.io/2019/9/3/16cf7c97203ae9ea?w=1108&h=788&f=png&s=121546" alt></p>
+<h5 id="csrf-特征："><a href="#csrf-特征：" class="headerlink" title="csrf 特征："></a>csrf 特征：</h5><ul>
+<li>攻击⼀般来源于第三方域名</li>
+<li>ccsrf 不能获取到 cookie，但是可以利用浏览器的特性去使用。 </li>
+<li>接口的所有参数都是可以预测的（攻击网站清楚要伪造请求接口的请求参数）</li>
+</ul>
+<p>&emsp;&emsp;从前面提到的跨域知识点中，能了解到浏览器对于 cookie 也是存在同源限制的，也就是与 cookie（domain）处于不同源的网站，浏览器是不会让该网站获取到这个 cookie。那为什么csrf攻击还会成功呢？其实这个与浏览器使用 cookie 的方式有关。</p>
+<p>浏览器使用 cookie 情况主要包括以下几点：</p>
+<ol>
+<li><p>除了跨域 XHR 请求情况下，浏览器在发起请求的时候会把符合要求的 cookie 自动带上。(域名，有效期，路径，secure 属性)</p>
+</li>
+<li><p>跨域 XHR 的请求的情况下，也可以携带 Cookie。</p>
+</li>
+<li><p>浏览器允许跨域提交表单</p>
+</li>
+</ol>
+<p>&emsp;&emsp;也就是说，浏览器中有页面或网站向某个域名发送请求时，其请求都会自动带上该域名下的所有 cookie。</p>
+<h3 id="csrf-防御途径"><a href="#csrf-防御途径" class="headerlink" title="csrf 防御途径"></a>csrf 防御途径</h3><blockquote>
+<p>简单列出三点</p>
+</blockquote>
+<h4 id="1-Referer-HTTP请求完整来源路径（不完善）"><a href="#1-Referer-HTTP请求完整来源路径（不完善）" class="headerlink" title="1. Referer: HTTP请求完整来源路径（不完善）"></a>1. Referer: HTTP请求完整来源路径（不完善）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">针对通过 Referer 字段去判断请求来源是否合法是不太靠谱的，这个字段很有可能会丢失：</span><br><span class="line"></span><br><span class="line">1.IE6、7下使用 window.location.href=url 进行界面的跳转或者 window.open，都会造成 Referer 丢失。</span><br><span class="line"></span><br><span class="line">2.HTTPS 页面跳转到 HTTP 页面，所有浏览器 Referer 都丢失。</span><br><span class="line"></span><br><span class="line">3.点击 Flash 上到达另外一个网站的时候，Referer 的情况就比较杂乱，不太可信。</span><br><span class="line"></span><br><span class="line">可以附加使用于判断请求来源，但是仅通过该字段进行判断是不太靠谱的，如果请求头丢失该字段，则服务端无法判断当前请求来源，无法校验请求是否合法。</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-Origin-CORS-中的请求头，当跨域访问时，会携带此请求头（不完善）"><a href="#2-Origin-CORS-中的请求头，当跨域访问时，会携带此请求头（不完善）" class="headerlink" title="2. Origin: CORS 中的请求头，当跨域访问时，会携带此请求头（不完善）"></a>2. Origin: CORS 中的请求头，当跨域访问时，会携带此请求头（不完善）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">在以下情况不存在此请求头：</span><br><span class="line"></span><br><span class="line">302 重定向： </span><br><span class="line">1. 在 302 重定向之后 Origin 不包含在重定向的请求中，因为 Origin 可能会被认为是其他来源的敏感信息。</span><br><span class="line">2.对于 302 重定向的情况来说都是定向到新的服务器上的 URL，因此浏览器不想将 Origin 泄漏到新的服务器上。</span><br><span class="line"></span><br><span class="line">Origin 和 Referer 存在相同的问题，同样有可能丢失该字段。</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-token-校验（常用方式）"><a href="#3-token-校验（常用方式）" class="headerlink" title="3. token 校验（常用方式）"></a>3. <strong>token 校验（常用方式）</strong></h4><p>最常用的一种是通过token去校验请求是否合法：</p>
+<h5 id="校验原理"><a href="#校验原理" class="headerlink" title="校验原理:"></a>校验原理:</h5><ol>
+<li>后端生成 token，并存在 session 中。</li>
+<li>用户请求成功后，后端将 token 发送到客户端，发送方式主要是为以下两种：</li>
+</ol>
+<p>（1）服务端将 token 渲染到 html 中。<br>    也就是通过一个 dom 结点保存 token 信息，客户端就可以通过 dom 操作获取到该 token 内容。（同源策略会限制脚本 API 操作）</p>
+<p>（2）服务端将 token 设置到 cookie 中。<br>    客户端从 cookie 中获取（同源策略限制 cookie 操作）</p>
+<ol start="3">
+<li><p>客户端在获取到 token 后，在下一次进行比较关键的请求操作时，将 token 发送到服务端。</p>
+<p>发送 token 到服务端的方式主要包括两种：</p>
+</li>
+</ol>
+<ul>
+<li>在请求头中将获取到的 token 设置到 cookie 中。</li>
+<li>将 token 放到请求参数中。</li>
+</ul>
+<ol start="4">
+<li>服务端在接收到请求后，会从请求头中取出 token，并和 session 中的 token 进行比较，一致则表示身份验证通过，再返回相应的信息；否则，则校验不通过。</li>
+</ol>
+<p>补充： </p>
+<p>&emsp;&emsp;token 校验之所以能防御 csrf，是因为相信浏览器的同源策略。为什么这么说？因为只有在同源的情况下，页面才能进行脚本操作和使用 js 获取 cookie 的操作，才能获取到 token。也就是说第三方网站是没有办法拿到 token 的。只有真正有权限的网站或页面才有办法取到 token，并将 token 传到服务端。所以服务端默认带有相应 token 的请求都是合法的请求。</p>
+<p>注：设置 http only，禁止通过 js 操作 cookie</p>
+<h4 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h4><ul>
+<li><a href="https://www.cnblogs.com/artech/p/cors-4-asp-net-web-api-01.html" target="_blank" rel="noopener">[CORS：跨域资源共享] 同源策略与JSONP</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">HTTP访问控制（CORS）</a></li>
+</ul>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DDong</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2019/09/03/关于跨域与-csrf-的那些小事/">http://yoursite.com/2019/09/03/关于跨域与-csrf-的那些小事/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com">冬之乐园</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2019/09/18/hello-world/"><i class="fas fa-angle-left">&nbsp;</i><span>Hello World</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2019/08/27/cron-表达式-crontab-定时任务/"><span>cron 表达式 &amp; crontab 定时任务</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2017 ～ 2019 By DDong</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

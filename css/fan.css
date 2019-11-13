@@ -1627,6 +1627,8 @@ body .button-hover:hover::before {
     padding: 0;
     background: transparent;
     border-radius: 0;
+    max-height: 500px;
+    overflow: hidden;
   }
   #recent-posts .recent-post-item .content {
     margin-top: 32px;
@@ -3638,6 +3640,8 @@ body .button-hover:hover::before {
     padding: 0;
     background: transparent;
     border-radius: 0;
+    max-height: 500px;
+    overflow: hidden;
   }
   #recent-posts .recent-post-item .content {
     margin-top: 32px;

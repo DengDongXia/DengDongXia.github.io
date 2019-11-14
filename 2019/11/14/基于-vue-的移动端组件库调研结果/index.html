@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="基于 vue 的移动端组件库调研结果"><meta name="keywords" content="vue,组件库,移动端"><meta name="author" content="DDong,undefined"><meta name="copyright" content="DDong"><title>基于 vue 的移动端组件库调研结果【冬之乐园】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="icon" href="/favicon.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  }
+}</script></head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vue-移动端组件库调研"><span class="toc-number">1.</span> <span class="toc-text">vue 移动端组件库调研</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#前言"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">前言</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一、现有-vue-相关组件库基本分析"><span class="toc-number">1.0.1.</span> <span class="toc-text">一、现有 vue 相关组件库基本分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-vonic-v1-1-3"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">1. vonic (v1.1.3)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-vux-v2-9-4"><span class="toc-number">1.0.1.2.</span> <span class="toc-text">2. vux (v2.9.4)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Mint-UI"><span class="toc-number">1.0.1.3.</span> <span class="toc-text">3. Mint UI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-MUI"><span class="toc-number">1.0.1.4.</span> <span class="toc-text">4. MUI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Muse-ui-V3-0-2"><span class="toc-number">1.0.1.5.</span> <span class="toc-text">5. Muse-ui (V3.0.2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-vant"><span class="toc-number">1.0.1.6.</span> <span class="toc-text">6. vant</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-Cube-UI"><span class="toc-number">1.0.1.7.</span> <span class="toc-text">7. Cube UI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-NutUI-V2-1-5"><span class="toc-number">1.0.1.8.</span> <span class="toc-text">8. NutUI (V2.1.5)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-vue-carbon"><span class="toc-number">1.0.1.9.</span> <span class="toc-text">9. vue-carbon</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-vum"><span class="toc-number">1.0.1.10.</span> <span class="toc-text">10. vum</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-Weex"><span class="toc-number">1.0.1.11.</span> <span class="toc-text">11. Weex</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、github-数据（至2019-09-22）"><span class="toc-number">1.0.2.</span> <span class="toc-text">二、github 数据（至2019.09.22）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、结合组件库调研结果，抽取以下几个组件库进行进行详细分析"><span class="toc-number">1.0.3.</span> <span class="toc-text">三、结合组件库调研结果，抽取以下几个组件库进行进行详细分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-功能是否全面-需求契合度，多样性等，满分10分"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">1. 功能是否全面(需求契合度，多样性等，满分10分)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-是否易于拓展"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">2. 是否易于拓展</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-是否稳定，bug数量-参考GitHub-issuse内容"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">3. 是否稳定，bug数量(参考GitHub issuse内容)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-是否依旧维护"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">4. 是否依旧维护</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-仓库使用量"><span class="toc-number">1.0.3.5.</span> <span class="toc-text">5. 仓库使用量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-综上5个方面，得出总体评分如下："><span class="toc-number">1.0.3.6.</span> <span class="toc-text">6. 综上5个方面，得出总体评分如下：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总的来说-》移动端基础组件库有赞vant完胜"><span class="toc-number">1.0.4.</span> <span class="toc-text">总的来说 ==》移动端基础组件库有赞vant完胜</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#参考文章"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">参考文章</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/avatar.png"></div><div class="author-info-name">DDong</div><div class="author-info-description"></div><div class="links-buttons"><a class="links-button button-hover" href="https://github.com/DengDongXia" target="_blank">GitHub<i class="icon-dot bg-color6"></i></a><a class="links-button button-hover" href="mailto:3067845479@qq.com" target="_blank">E-Mail<i class="icon-dot bg-color3"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">日志</span><span class="pull-bottom">20</span></a><a class="author-info-articles-tags article-meta" href="/tags"><span class="pull-top">标签</span><span class="pull-bottom">26</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">13</span></a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/tags">标签</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">冬之乐园</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">基于 vue 的移动端组件库调研结果</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2019-11-14 | 更新于 2019-11-14</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"></div><div class="button-hover tags"><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/vue/">vue</a><span>&nbsp;|&nbsp;</span><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/组件库/">组件库</a><span>&nbsp;|&nbsp;</span><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/移动端/">移动端</a></div></div></div><div class="main-content"><h1 id="vue-移动端组件库调研"><a href="#vue-移动端组件库调研" class="headerlink" title="vue 移动端组件库调研"></a>vue 移动端组件库调研</h1><blockquote>
+<p>注：该文章相关信息截止至2019.10.10</p>
+</blockquote>
+<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>&emsp;&emsp;为了更好地展开移动端项目的开发工作，部门打算开发一个移动端组件库。而要要将自己的移动端组件库开发好，就得先选择一个基于 vue 并且合适的移动端组件库作为基础组件库，所以有了下文的调研和分析。</p>
+<h3 id="一、现有-vue-相关组件库基本分析"><a href="#一、现有-vue-相关组件库基本分析" class="headerlink" title="一、现有 vue 相关组件库基本分析"></a>一、现有 vue 相关组件库基本分析</h3><h4 id="1-vonic-v1-1-3"><a href="#1-vonic-v1-1-3" class="headerlink" title="1. vonic (v1.1.3)"></a>1. <a href="https://wangdahoo.github.io/vonic-documents/#/?id=%E4%BB%8B%E7%BB%8D" target="_blank" rel="noopener">vonic (v1.1.3)</a></h4><blockquote>
+<p><a href="https://wangdahoo.github.io/vonic/docs/#/" target="_blank" rel="noopener">预览</a>  star: <code>3261</code>; 用户量：<code>218</code><br>一个基于 vue.js 和 ionic 样式的 UI 框架，用于快速构建移动端单页应用。</p>
+</blockquote>
+<p><img src="/images/2019-11-14-19-57-19.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">优势：包含比较全面的组件/服务/指令</span><br><span class="line">劣势：最近更新时间是8个月前，用户量和讨论不是很多，活跃度不高</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-vux-v2-9-4"><a href="#2-vux-v2-9-4" class="headerlink" title="2. vux (v2.9.4)"></a>2. <a href="https://vux.li/#/?id=%E7%AE%80%E4%BB%8B" target="_blank" rel="noopener">vux (v2.9.4)</a></h4><blockquote>
+<p><a href="https://vux.li/demos/v2/?x-page=v2-doc-home#/" target="_blank" rel="noopener">预览</a> star:<code>16337</code> 用户量：<code>9012</code></p>
+</blockquote>
+<p><img src="/images/2019-11-14-19-57-47.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">特点：</span><br><span class="line">1.个人维护</span><br><span class="line">2.支持 Nuxt.js</span><br><span class="line">3.支持自定义主题</span><br><span class="line">4.组件样式仿照微信</span><br><span class="line">5.适合微信端移动项目</span><br><span class="line"></span><br><span class="line">优势：组件全面，用户量多，讨论活跃度还OK</span><br><span class="line"></span><br><span class="line">劣势：</span><br><span class="line">1. 必须配合 vux-loader 使用</span><br><span class="line">2. less@3.x 有严重的兼容问题，请暂时使用 less@^2.7.3</span><br><span class="line">3. 暂未适配 vue-cli@3.x</span><br><span class="line">4. 不推荐使用 umd 方式引用组件</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Mint-UI"><a href="#3-Mint-UI" class="headerlink" title="3. Mint UI"></a>3. <a href="http://mint-ui.github.io/docs/#/zh-cn2" target="_blank" rel="noopener">Mint UI</a></h4><blockquote>
+<p><a href="http://elemefe.github.io/mint-ui/#/" target="_blank" rel="noopener">预览</a> <a href="https://github.com/ElemeFE/mint-ui/issues" target="_blank" rel="noopener">github</a> star: <code>14968</code> 用户量：<code>24931</code><br>饿了么前端团队开发的移动端组件库。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">项目特点</span><br><span class="line"></span><br><span class="line">1.团队维护</span><br><span class="line">2.真正做到了按需引入，每个组件有单独的包</span><br><span class="line">3.CSS3 处理各种动效</span><br><span class="line">4.组件齐全</span><br><span class="line">5.适用于移动端常规项目</span><br><span class="line"></span><br><span class="line">样式： scss、template、script、css 都在一个文件中，长类名区分</span><br><span class="line"></span><br><span class="line">优点：用户量多</span><br><span class="line"></span><br><span class="line">劣势：两年多项目和文档都没有更新了，有不少bug，用户反馈的很对问题也没有解决，感觉有点凉，不太敢用</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-MUI"><a href="#4-MUI" class="headerlink" title="4. MUI"></a>4. <a href="https://dev.dcloud.net.cn/mui/" target="_blank" rel="noopener">MUI</a></h4><blockquote>
+<p><a href="https://github.com/dcloudio/mui" target="_blank" rel="noopener">github</a> star: <code>12077</code> 用户量：<code>495</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">项目特点：</span><br><span class="line">1.轻量：追求性能体验，MUI不依赖任何第三方JS库，压缩后的JS和CSS文件仅有100+K和60+K。</span><br><span class="line">2.原生UI：以iOS平台UI为基础，补充部分Android平台特有的UI控件</span><br><span class="line">3.流畅体验：各种动画实现。</span><br><span class="line"></span><br><span class="line">优势：</span><br><span class="line">1. 有自己的讨论社区(https://ask.dcloud.net.cn/explore/sort_type-new__category-3__day-0)，活跃度挺好的</span><br><span class="line"></span><br><span class="line">劣势： 一年没有更新了，很多issues 都没有被解决</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-Muse-ui-V3-0-2"><a href="#5-Muse-ui-V3-0-2" class="headerlink" title="5. Muse-ui (V3.0.2)"></a>5. <a href="https://muse-ui.org/#/zh-CN" target="_blank" rel="noopener">Muse-ui (V3.0.2)</a></h4><blockquote>
+<p><a href="https://github.com/museui/muse-ui" target="_blank" rel="noopener">github</a> star: <code>7714</code> 用户量：<code>4106</code></p>
+</blockquote>
+<p><img src="/images/2019-11-14-19-58-18.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">项目特点：</span><br><span class="line">1.组件丰富:40多个UI 组件，用于适应不同业务环境。</span><br><span class="line">2.可定制:自定义主题方式极为优雅，仅需少量代码即可完成主题样式替换。</span><br><span class="line">3.基于 Vue 2.0:是当下最快的前端框架之一，小巧，api友好，可用于开发的复杂单页应用</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-vant"><a href="#6-vant" class="headerlink" title="6. vant"></a>6. <a href="https://youzan.github.io/vant/#/zh-CN/intro" target="_blank" rel="noopener">vant</a></h4><blockquote>
+<p><a href="https://github.com/youzan/vant" target="_blank" rel="noopener">github</a>  star: <code>10573</code> 用户量：<code>8590</code><br>有赞团队开发的移动端组件库。</p>
+</blockquote>
+<p><img src="/images/2019-11-14-19-58-29.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">项目特点；</span><br><span class="line">1.团队维护</span><br><span class="line">2.有多个版本：小程序 UI =&gt; Vant Weapp、PC 端 React UI =&gt; Zen</span><br><span class="line">3.支持 SSR</span><br><span class="line">4.常规支持：多语言、自定义主题、按需引入</span><br><span class="line">5.文档详细，组件齐全</span><br><span class="line">6.适用于移动端商城购物类网站</span><br><span class="line">7.60+ 高质量组件</span><br><span class="line">8.95% 单元测试覆盖率</span><br><span class="line">9.完善的中英文文档和示例</span><br><span class="line">10.支持按需引入、主题定制、国际化</span><br><span class="line">11.支持 TS 、SSR</span><br><span class="line"></span><br><span class="line">优势： 至今一直有人维护，用户量多，社区活跃度高，支持vue-cli3</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-Cube-UI"><a href="#7-Cube-UI" class="headerlink" title="7. Cube UI"></a>7. <a href="https://didi.github.io/cube-ui/#/zh-CN/docs/quick-start" target="_blank" rel="noopener">Cube UI</a></h4><blockquote>
+<p><a href="https://github.com/didi/cube-ui" target="_blank" rel="noopener">github</a> star：<code>7095</code> 用户量：<code>1855</code><br>滴滴团队开发的移动端组件。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.团队维护</span><br><span class="line">2.支持后编译</span><br><span class="line">3.常规支持：多语言、自定义主题、按需引入</span><br><span class="line">4.文档详细，组件齐全</span><br><span class="line">5.扩展性强，可以方便地基于现有组件实现二次开发</span><br><span class="line">6.适合移动端需要扩展的项目，或者引用框架部分源代码组合成自己的 ui 组件库</span><br><span class="line"></span><br><span class="line">样式：scss、BEM 类名命名法</span><br><span class="line"></span><br><span class="line">优势： </span><br><span class="line">1. 支持vue-cli 3</span><br><span class="line">2. 维护积极，直到目前一直有人在更新</span><br><span class="line"></span><br><span class="line">劣势：用户量偏少</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-NutUI-V2-1-5"><a href="#8-NutUI-V2-1-5" class="headerlink" title="8. NutUI (V2.1.5)"></a>8. <a href="https://nutui.jd.com/#/index" target="_blank" rel="noopener">NutUI (V2.1.5)</a></h4><blockquote>
+<p><a href="https://nutui.jd.com/demo.html#/index" target="_blank" rel="noopener">预览</a> star: <code>1346</code>  使用量：<code>69</code><br>NutUI是一套京东风格的移动端Vue组件库，开发和服务于移动Web界面的企业级前中后台产品。于2018.01发布。</p>
+</blockquote>
+<p><img src="/images/2019-11-14-19-58-42.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">项目特性：</span><br><span class="line">1. 跨平台，自动转微信小程序组件（稍后上线，敬请期待）</span><br><span class="line">2. 30+ 京东移动端项目正在使用</span><br><span class="line">3. 基于京东APP 7.0 视觉规范</span><br><span class="line">4. 支持按需加载</span><br><span class="line">5. 详尽的文档和示例</span><br><span class="line">6. 支持定制主题</span><br><span class="line">7. 支持多语言（国际化）</span><br><span class="line">8. 支持 TypeScript</span><br><span class="line">9. 支持服务端渲染（Vue SSR）</span><br><span class="line">10. 单元测试加持</span><br><span class="line">11. 配套有基于Webpack的构建工具，可快速创建已内置本组件库的Vue工程</span><br><span class="line"></span><br><span class="line">支持环境</span><br><span class="line">1. Android 4.0+</span><br><span class="line">2. iOS 8.0+</span><br><span class="line">3. 支持服务端渲染</span><br><span class="line"></span><br><span class="line">优势：组件很全面，最近更新时间是3个月前</span><br><span class="line"></span><br><span class="line">劣势：用户量偏少，目前主要是京东内部项目在使用。</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-vue-carbon"><a href="#9-vue-carbon" class="headerlink" title="9. vue-carbon"></a>9. <a href="https://www.awesomes.cn/repo/myronliu347/vue-carbon" target="_blank" rel="noopener">vue-carbon</a></h4><blockquote>
+<p><a href="https://myronliu347.github.io/vue-carbon/" target="_blank" rel="noopener">预览</a><br>已停止维护，迁移到muse-ui</p>
+</blockquote>
+<h4 id="10-vum"><a href="#10-vum" class="headerlink" title="10. vum"></a>10. <a href="http://getvum.com/" target="_blank" rel="noopener">vum</a></h4><blockquote>
+<p><a href="http://demo.getvum.com/#/" target="_blank" rel="noopener">预览</a> <a href="https://github.com/vum-team/vum" target="_blank" rel="noopener">github</a></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">已经两年没更新，较少用户量，缺少文档</span><br></pre></td></tr></table></figure>
+
+<h4 id="11-Weex"><a href="#11-Weex" class="headerlink" title="11. Weex"></a>11. <a href="https://weex.apache.org/zh/guide/introduction.html#%E6%A6%82%E8%BF%B0" target="_blank" rel="noopener">Weex</a></h4><blockquote>
+<p><a href="https://github.com/alibaba/weex" target="_blank" rel="noopener">GitHub</a><br>兼容多端的库</p>
+</blockquote>
+<h3 id="二、github-数据（至2019-09-22）"><a href="#二、github-数据（至2019-09-22）" class="headerlink" title="二、github 数据（至2019.09.22）"></a>二、github 数据（至2019.09.22）</h3><table>
+<thead>
+<tr>
+<th>组件库</th>
+<th>star</th>
+<th>仓库使用量</th>
+<th>watch</th>
+<th>最近更新时间</th>
+<th>issue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>vonic</td>
+<td>3261</td>
+<td>218</td>
+<td>500</td>
+<td>8个月前</td>
+<td>62/124</td>
+</tr>
+<tr>
+<td><code>vux</code></td>
+<td>16337</td>
+<td>9012</td>
+<td>717</td>
+<td>5个月前</td>
+<td>705/2438</td>
+</tr>
+<tr>
+<td>Mint UI</td>
+<td>14968</td>
+<td>24931</td>
+<td>500</td>
+<td>2年前</td>
+<td>230/972</td>
+</tr>
+<tr>
+<td>MUI</td>
+<td>12077</td>
+<td>495</td>
+<td>905</td>
+<td>一年前</td>
+<td>309/117</td>
+</tr>
+<tr>
+<td>Muse-ui</td>
+<td>7714</td>
+<td>4106</td>
+<td>290</td>
+<td>6个月前</td>
+<td>125/1146</td>
+</tr>
+<tr>
+<td><code>vant</code></td>
+<td>10573</td>
+<td>8590</td>
+<td>297</td>
+<td>今天</td>
+<td>14/2647</td>
+</tr>
+<tr>
+<td><code>Cube UI</code></td>
+<td>7095</td>
+<td>1855</td>
+<td>203</td>
+<td>5天前</td>
+<td>26/447</td>
+</tr>
+<tr>
+<td>NutUI</td>
+<td>1346</td>
+<td>69</td>
+<td>62</td>
+<td>2月前</td>
+<td>80/65</td>
+</tr>
+<tr>
+<td>Weex-UI</td>
+<td>4614</td>
+<td>531</td>
+<td>182</td>
+<td>4天前</td>
+<td>7/355</td>
+</tr>
+</tbody></table>
+<p><img src="/images/2019-11-14-19-58-55.png" alt></p>
+<p><img src="/images/2019-11-14-19-59-05.png" alt></p>
+<h3 id="三、结合组件库调研结果，抽取以下几个组件库进行进行详细分析"><a href="#三、结合组件库调研结果，抽取以下几个组件库进行进行详细分析" class="headerlink" title="三、结合组件库调研结果，抽取以下几个组件库进行进行详细分析"></a>三、结合组件库调研结果，抽取以下几个组件库进行进行详细分析</h3><blockquote>
+<p>选择的组件库包含： <strong>Mint UI/Vux/Muse-ui/vant/Cube-ui/</strong></p>
+</blockquote>
+<h4 id="1-功能是否全面-需求契合度，多样性等，满分10分"><a href="#1-功能是否全面-需求契合度，多样性等，满分10分" class="headerlink" title="1. 功能是否全面(需求契合度，多样性等，满分10分)"></a>1. 功能是否全面(需求契合度，多样性等，满分10分)</h4><ul>
+<li><code>Mint-UI</code>: 缺少对话框，卡片，容器组件，包含三大类组件（JS components, css components, form components），即29种小组件。(7分，扣在缺少部分组件)</li>
+<li><code>Vux</code>: 功能比较全面，包含11大类工具或组件（2个样式解决方案，一个新指令，7个工具函数，一个数据展示组件,2种图标展示方式，13种弹窗提示组件，5种导航组件，14种数据展示组件，29种表单组件，5种布局，3种基础组件）。（10分）</li>
+<li><code>Muse-Ui</code>: 组件超酷（个人很喜欢），组件风格可拓展（颜色，主题，icon，字体，布局），包含3种工具（过渡动画，4个指令，点击效果），5种插件，33种组件。（8分，扣在组件过于炫酷，不太符合已有需求的交互样式，使用后可能会增加工作量）。</li>
+<li><code>Vant</code>: 功能比较全面，也比较通用，比容易拓展。包含5种基础组件，14种表单组件，9种反馈组件，15种展示组件，8种导航组件，9种业务组件。(10分)</li>
+<li><code>Cube-Ui</code>: 组件缺少顶部菜单，组件多样性偏少。包含5种基础组件，12种表单组件，11种弹出层相关组件，8种滚动相关的组件（5分）</li>
+</ul>
+<p><img src="/images/2019-11-14-19-59-28.png" alt></p>
+<h4 id="2-是否易于拓展"><a href="#2-是否易于拓展" class="headerlink" title="2. 是否易于拓展"></a>2. 是否易于拓展</h4><ul>
+<li><code>Mint-UI</code>: 不支持国际化和主题定制，拓展性一般（主要是文档不够完善）（5分）</li>
+<li><code>Vux</code>: 不支持vue-cli3，必须配合 vux-loader 使用，<a href="mailto:less@3.x" target="_blank" rel="noopener">less@3.x</a> 有严重的兼容问题，文档很详细（存在什么坑以及对应解决方案，全部有给出），支持国际化（要装一个插件），支持主题颜色配置。（7分）</li>
+<li><code>Muse-Ui</code>: 未说明是否支持国际化或主题定制（5分）</li>
+<li><code>Vant</code>: 支持vue-cli3支持主题定制，颜色定制（进行样式变量的覆盖），支持国际化（多语言切换，修改默认文案），提供了一定的示例工程和适配方案。（10分）</li>
+<li><code>Cube-Ui</code>: 支持国际化，支持基于现有组件实现二次开发，使用后编译，编译时间缩短，支持主题定制。（9分）</li>
+</ul>
+<p><img src="/images/2019-11-14-19-59-36.png" alt></p>
+<h4 id="3-是否稳定，bug数量-参考GitHub-issuse内容"><a href="#3-是否稳定，bug数量-参考GitHub-issuse内容" class="headerlink" title="3. 是否稳定，bug数量(参考GitHub issuse内容)"></a>3. 是否稳定，bug数量(参考GitHub issuse内容)</h4><ul>
+<li><code>Mint-UI</code>: 未解决issuse超200个，未解决bug偏多（5分）</li>
+<li><code>Vux</code>: 对话框样式有bug，708个issuse未被解决，bug有点偏多，不过作者有打算重新回来维护（6分）</li>
+<li><code>Muse-Ui</code>: 未解决issuse 127个 （7分）</li>
+<li><code>Vant</code>: 还有20个issuse在等待解决，问题解决速度很快（10分）</li>
+<li><code>Cube-Ui</code>: 还有30个左右的issuse未解决，解决问题速度挺好的（10分）</li>
+</ul>
+<p><img src="/images/2019-11-14-19-59-47.png" alt></p>
+<h4 id="4-是否依旧维护"><a href="#4-是否依旧维护" class="headerlink" title="4. 是否依旧维护"></a>4. 是否依旧维护</h4><ul>
+<li><p><code>Mint-UI</code>: 未解决issuse超200个，未解决bug偏多，2两年多没有维护和更新了，凉得不行（5分）</p>
+</li>
+<li><p><code>Vux</code>: 已恢复正常维护和更新，个人维护，最近一次更新为5个月前（8分，但是由于是个人维护，感觉不够靠谱，扣一些分）</p>
+</li>
+<li><p><code>Muse-Ui</code>: 最近一次更新时间是7个月前 （7分）</p>
+</li>
+<li><p><code>Vant</code>: 几乎每天都有在维护和更新，维护很勤快（10分）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vant 发布节奏:</span><br><span class="line">修订号：每周发布，包含新特性和问题修复。</span><br><span class="line">次版本号：每隔一至二个月发布，包含新特性和较大的功能更新，向下兼容。</span><br><span class="line">主版本号：发布时间不定，包含不兼容更新，预计下一个主版本会与 Vue <span class="number">3.0</span> 同期发布。</span><br><span class="line"></span><br><span class="line">补充：文档信息很完善</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>Cube-Ui</code>:最近一个月有进行更新维护（9分） </p>
+</li>
+</ul>
+<p><img src="/images/2019-11-14-19-59-59.png" alt></p>
+<h4 id="5-仓库使用量"><a href="#5-仓库使用量" class="headerlink" title="5. 仓库使用量"></a>5. 仓库使用量</h4><ul>
+<li><code>Mint-UI</code>: 24931（10分，好像是出现的比较早）</li>
+<li><code>Vux</code>: 9012（9分）</li>
+<li><code>Muse-Ui</code>: 4106（7分）</li>
+<li><code>Vant</code>: 8590（现在好像变为9000多了，增长速度很快）（9分）</li>
+<li><code>Cube-Ui</code>: 1855（4分）</li>
+</ul>
+<p><img src="/images/2019-11-14-20-00-08.png" alt></p>
+<h4 id="6-综上5个方面，得出总体评分如下："><a href="#6-综上5个方面，得出总体评分如下：" class="headerlink" title="6. 综上5个方面，得出总体评分如下："></a>6. 综上5个方面，得出总体评分如下：</h4><p><img src="/images/2019-11-14-20-00-16.png" alt></p>
+<h3 id="总的来说-》移动端基础组件库有赞vant完胜"><a href="#总的来说-》移动端基础组件库有赞vant完胜" class="headerlink" title="总的来说 ==》移动端基础组件库有赞vant完胜"></a>总的来说 ==》移动端基础组件库有赞<code>vant</code>完胜</h3><blockquote>
+<p>其实感觉只有这个库比较合适了，其他库要不维护积极性偏低，或用户量偏少，要不就是不利于拓展，没得选…</p>
+</blockquote>
+<h4 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h4><ul>
+<li><p><a href="https://www.cnblogs.com/dupd/p/7735450.html" target="_blank" rel="noopener">优秀的基于VUE移动端UI框架合集</a></p>
+</li>
+<li><p><a href="https://www.awesomes.cn/subject/8311014#Dom-%E6%A1%86%E6%9E%B6" target="_blank" rel="noopener">vue 主题</a></p>
+</li>
+<li><p><a href="https://www.imooc.com/article/286164?block_id=tuijian_wz" target="_blank" rel="noopener">vue前端UI框架，一点都不圆润，盘它！</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/weixin_38633659/article/details/89736656#5MUImobAPP_61" target="_blank" rel="noopener">Vue常用组件库的比较分析（移动端）</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_26780317/article/details/80655353" target="_blank" rel="noopener">[收藏]VUE优秀UI组件库合集</a></p>
+</li>
+</ul>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DDong</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://dengdongxia.com/2019/11/14/基于-vue-的移动端组件库调研结果/">http://dengdongxia.com/2019/11/14/基于-vue-的移动端组件库调研结果/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://dengdongxia.com">冬之乐园</a>！</span></div></div></article><div id="pagination"><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2019/11/07/outline-与-clip-实现自动填满屏幕剩余空间的应用技巧-解决页面底部留白问题/"><span>outline 与 clip 实现自动填满屏幕剩余空间的应用技巧 -- 解决页面底部留白问题</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2017 ～ 2019 By DDong</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>
